@@ -12,6 +12,14 @@ $(document).ready(function () {
     $.get("https://pokeapi.co/api/v2/location/" + idLocacion)
         .done((location) => {
 
+            // Habilita boton regresar
+            document.getElementById("volver").href += "?region=" + location.region.url.split('/').reverse()[1]
+
+            //Habilita el título
+            document.getElementById("labelLocacion").innerHTML += ": " + location.name
+            document.getElementById("labelRegion").innerHTML += ": " + location.region.name
+
+
             for (let ii=0; ii<location.areas.length; ii++){
 
                 let row = template.content.querySelector("tr").cloneNode(true);
@@ -20,7 +28,7 @@ $(document).ready(function () {
                 row.cells.item(1).innerHTML = location.areas[ii].name
 
                 let boton = row.cells.item(2).children[0]
-                boton.id = areas.areas[ii].url.split('/').reverse()[1]
+                boton.id = location.areas[ii].url.split('/').reverse()[1]
 
                 boton.addEventListener("click", function (){
                     mostrarImagenes(this.id, location.areas[ii].name)
@@ -40,13 +48,16 @@ $(document).ready(function () {
         $.get("https://pokeapi.co/api/v2/location-area/"+id)
             .done((msg) => {
 
-                let img_cell = template.content.querySelector(".col-3").cloneNode(true)
                 let listaPokemones = msg.pokemon_encounters
 
                 const titulo = document.getElementById("areaSeleccionada")
                 titulo.innerHTML = "Pokemones a encontrarse en el Área: " + nombreArea
 
+                console.log(listaPokemones.length)
+
                 listaPokemones.forEach((pokemon) => {
+
+                    let img_cell = template.content.querySelector(".col-3").cloneNode(true)
                     let nombre = pokemon.pokemon.name
                     let idPokemon = pokemon.pokemon.url.split('/').reverse()[1]
 
