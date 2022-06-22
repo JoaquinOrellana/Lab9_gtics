@@ -16,6 +16,19 @@ $(document).ready(function () {
       let listalocations = data.locations;
       console.log(listalocations);
 
+
+      let tamlista=listalocations.length;
+      console.log("Tamaño de lista:"+tamlista);
+      const locxpag=10;
+      const cntpag=Math.ceil(tamlista/locxpag);
+      console.log("paginas:"+cntpag);
+      let i = 1;
+      $("#paginador").append("<li class=\"page-item disabled\"><span class=\"page-link\">Previous</span></li>")
+      for (i;i<cntpag;i++){
+        $("#paginador").append("<li class=\"page-item \" id='pag"+i+"'><button value=\"1\" class=\"page-link\">"+i+"</button></li>")
+      }
+      $("#paginador").append("<li class=\"page-item\"><a class=\"page-link\" href=\"#\">Next</a></li>")
+
       let tblDinamic = "";
       for (let i = 0; i < listalocations.length; i++) {
         let url=listalocations[i].url;
