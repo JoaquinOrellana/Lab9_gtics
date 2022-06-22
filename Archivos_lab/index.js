@@ -17,5 +17,6 @@ $(document).ready(function () {
     $("tbody").html(tabla);
   }).fail(function(err) {
     console.log(err);
+    alert("La region no exite")
   })
 });
