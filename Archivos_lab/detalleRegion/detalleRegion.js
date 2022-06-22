@@ -12,36 +12,87 @@ $(document).ready(function () {
 
 
     }).done(function (data) {
-
+      let pagina=0;
       let listalocations = data.locations;
-      console.log(listalocations);
-
-
       let tamlista=listalocations.length;
-      console.log("Tamaño de lista:"+tamlista);
       const locxpag=10;
       const cntpag=Math.ceil(tamlista/locxpag);
-      console.log("paginas:"+cntpag);
-      let i = 1;
-      $("#paginador").append("<li class=\"page-item disabled\"><span class=\"page-link\">Previous</span></li>")
-      for (i;i<cntpag;i++){
-        $("#paginador").append("<li class=\"page-item \" id='pag"+i+"'><button value=\"1\" class=\"page-link\">"+i+"</button></li>")
-      }
-      $("#paginador").append("<li class=\"page-item\"><a class=\"page-link\" href=\"#\">Next</a></li>")
 
-      let tblDinamic = "";
-      for (let i = 0; i < listalocations.length; i++) {
-        let url=listalocations[i].url;
-        let id=url.substr(35,2);
-        console.log(id);
-        tblDinamic += "<tr>";
-        tblDinamic += "   <td>" + (i + 1) + "</td>";
-        tblDinamic += "   <td>" + listalocations[i].name + "</td>";
-        tblDinamic += "   <td> <a class=\"btn btn-primary botonDetalle\" role=\"button\" href='../detalleLocacion/detalleLocacion.html?locacion="+id+"'>Detalles</a>  </td>";
-        tblDinamic += "</tr>";
+      crearbotpag(pagina);
+      function crearbotpag(pag){
+
+        document.getElementById("paginador").innerHTML="";
+
+        if(pag==0){
+          $("#paginador").append("<li class=\"page-item direccion disabled\" value='-1' ><span class=\"page-link\">Previous</span></li>")
+        }else{
+          $("#paginador").append("<li class=\"page-item direccion \" value='-1'><span class=\"page-link\">Previous</span></li>")
+        }
+        for (let i=0;i<cntpag;i++){
+          if(pag==i){
+            $("#paginador").append("<li class=\"page-item active\"  id='pag"+i+"' value='"+i+"'><button  class=\"page-link\">"+(i+1)+"</button></li>")
+          }else{
+            $("#paginador").append("<li class=\"page-item \"  id='pag"+i+"' value='"+i+"'><button  class=\"page-link\">"+(i+1)+"</button></li>")
+          }
+        }
+        if(pag==cntpag-1){
+          $("#paginador").append("<li class=\"page-item direccion disabled\" value='1'><a class=\"page-link\" href=\"#\">Next</a></li>")
+        }else{
+          $("#paginador").append("<li class=\"page-item direccion\" value='1'><a class=\"page-link\" href=\"#\">Next</a></li>")
+        }
+
+        $(".page-item:not(.direccion)").click(function (){
+          console.log(this.value);
+          pagina= this.value;
+          gentabla(pagina);
+          crearbotpag(pagina);
+        })
+
+        $(".direccion:not(.disabled)").click(function (){
+          console.log("pagina antes:"+pagina);
+          pagina =pagina+this.value;
+          console.log("Pagina a dps:"+pagina);
+          gentabla(pagina);
+          crearbotpag(pagina);
+        })
+
+
       }
-      console.log(tblDinamic);
-      $("tbody").html(tblDinamic);
+
+
+
+
+      gentabla(pagina);
+
+
+      function gentabla(pag){
+        let tblDinamic = "";
+
+        for (let i = pag*locxpag; i <(pag+1)*locxpag; i++) {
+          if(i<tamlista){
+            let url=listalocations[i].url;
+            let id=url.substr(35,2);
+            tblDinamic += "<tr>";
+            tblDinamic += "   <td>" + (i + 1) + "</td>";
+            tblDinamic += "   <td>" + listalocations[i].name + "</td>";
+            tblDinamic += "   <td> <a class=\"btn btn-primary botonDetalle\" role=\"button\" href='../detalleLocacion/detalleLocacion.html?locacion="+id+"'>Detalles</a>  </td>";
+            tblDinamic += "</tr>";
+          }
+
+        }
+
+        $("tbody").html(tblDinamic);
+
+      }
+
+
+
+
+
+
+
+
+
 
 
     }).fail(function (e) {
