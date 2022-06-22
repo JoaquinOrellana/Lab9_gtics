@@ -8,7 +8,7 @@ $(document).ready(function () {
 
     $.ajax({
       method: "GET",
-      url: "https://pokeapi.co/api/v2/region/2",
+      url: "https://pokeapi.co/api/v2/region/"+idRegion,
 
 
     }).done(function (data) {

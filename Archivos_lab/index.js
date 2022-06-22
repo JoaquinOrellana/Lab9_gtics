@@ -10,7 +10,7 @@ $(document).ready(function () {
       tabla += "<tr>";
       tabla += "   <td>" + (i + 1) + "</td>";
       tabla += "   <td>" + listaRegiones[i].name + "</td>";
-      tabla += "   <td><a class=\"btn btn-primary botonDetalle\" href='../detalleRegion/detalleRegion.html?region="+(i+1)+"' role=\"button\">Detalle</a></td>";
+      tabla += "   <td><a class=\"btn btn-primary botonDetalle\" href='detalleRegion/detalleRegion.html?region="+(i+1)+"' role=\"button\">Detalle</a></td>";
 
       tabla += "</tr>";
     }
